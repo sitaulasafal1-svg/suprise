@@ -109,11 +109,15 @@ body {
   transform: translateX(-50%);
   padding: 12px 28px;
   border-radius: 30px;
-  background: rgba(255,182,255,0.2);
-  color: rgb(0, 0, 0);
+
+  background: rgba(255,182,255,0.35); /* brighter */
+  color: black;
+
   opacity: 0;
   pointer-events: none;
-  z-index: 20;
+box-shadow: 0 0 15px rgba(255,180,255,0.6);
+  z-index: 30; /* above everything */
+  backdrop-filter: blur(6px);
 }
 
 /* LETTER */
