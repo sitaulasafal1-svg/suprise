@@ -110,7 +110,7 @@ body {
   padding: 12px 28px;
   border-radius: 30px;
   background: rgba(255,182,255,0.2);
-  color: white;
+  color: rgb(0, 0, 0);
   opacity: 0;
   pointer-events: none;
   z-index: 20;
@@ -129,7 +129,6 @@ body {
   pointer-events: none;
   transition: 0.5s;
   z-index: 10;
-    backdrop-filter: blur(6px);
 }
 
 .letter.show {
@@ -159,6 +158,10 @@ body {
   transform: translate(-50%, -50%) scale(0.3);
   transition: 0.5s;
   z-index: 5;
+  .photo {
+  filter: brightness(1.2) contrast(1.1);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.35);
+}
 }
 
 /* MOBILE */
@@ -294,26 +297,32 @@ function handleClick() {
 }
 
 
-function showPhotos() {
-  const photos = document.querySelectorAll(".photo");
 
-  const minDist = 16;
-  const margin = 8;
+function showPhotos() {
+
+  const allPhotos = Array.from(document.querySelectorAll(".photo"));
+
+  // 👉 limit number for clarity
+  allPhotos.sort(() => Math.random() - 0.5);
+  const photos = allPhotos.slice(0, 18); // cleaner
+
+  const minDist = 18;
+  const margin = 10;
   const points = [];
 
   function isValid(x, y) {
 
-    // 🚫 center block
-    if (x > 15 && x < 85 && y > 25 && y < 75) return false;
+    // 🚫 protect letter area (stronger)
+    if (x > 12 && x < 88 && y > 28 && y < 72) return false;
 
-    // 🚫 circular buffer
-    const centerX = 50;
-    const centerY = 50;
+    // 🚫 circular buffer (stronger)
+    const dx = x - 50;
+    const dy = y - 50;
 
-    const dx = x - centerX;
-    const dy = y - centerY;
+    if (Math.sqrt(dx*dx + dy*dy) < 42) return false;
 
-    if (Math.sqrt(dx*dx + dy*dy) < 38) return false;
+    // 🚫 avoid button zone
+    if (y > 80 && x > 30 && x < 70) return false;
 
     // spacing between photos
     return points.every(p => {
@@ -324,25 +333,29 @@ function showPhotos() {
   }
 
   photos.forEach((photo, i) => {
+
     let x, y, tries = 0;
 
     do {
-      x = margin + Math.random() * (100 - 2*margin);
-      y = margin + Math.random() * (100 - 2*margin);
+      x = margin + Math.random() * (100 - 2 * margin);
+      y = margin + Math.random() * (100 - 2 * margin);
       tries++;
-    } while (!isValid(x, y) && tries < 200);
+    } while (!isValid(x, y) && tries < 300);
 
     points.push({ x, y });
 
     photo.style.left = x + "%";
     photo.style.top = y + "%";
 
+    // ✨ better animation timing
     setTimeout(() => {
       photo.style.opacity = 1;
       photo.style.transform = "translate(-50%, -50%) scale(1)";
-    }, i * 400);
+    }, i * 250);
   });
+
 }
+</script>
 
 // PREVIEW OPEN
 function openPreview(src) {
