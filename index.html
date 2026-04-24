@@ -107,17 +107,20 @@ body {
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
-  padding: 12px 28px;
+  padding: 14px 30px;
   border-radius: 30px;
 
-  background: rgba(255,182,255,0.35); /* brighter */
+  background: rgba(255, 255, 255, 0.9); /* strong contrast */
   color: black;
+  font-weight: bold;
 
   opacity: 0;
   pointer-events: none;
-box-shadow: 0 0 15px rgba(255,180,255,0.6);
-  z-index: 30; /* above everything */
-  backdrop-filter: blur(6px);
+
+  z-index: 50; /* highest */
+  backdrop-filter: blur(8px);
+
+  box-shadow: 0 0 20px rgba(255,255,255,0.8);
 }
 
 /* LETTER */
@@ -202,6 +205,17 @@ box-shadow: 0 0 15px rgba(255,180,255,0.6);
   max-width: 90%;
   max-height: 90%;
   border-radius: 15px;
+}
+
+#clickBtn.show {
+  opacity: 1;
+  pointer-events: auto;
+  animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+  0% { transform: translateX(-50%) scale(0.8); opacity: 0; }
+  100% { transform: translateX(-50%) scale(1); opacity: 1; }
 }
 
 </style>
@@ -290,8 +304,7 @@ function checkAndContinue() {
     document.getElementById("message").style.opacity = 1;
     document.querySelector(".form-box").style.display = "none";
 
-    document.getElementById("clickBtn").style.opacity = 1;
-    document.getElementById("clickBtn").style.pointerEvents = "auto";
+    document.getElementById("clickBtn").classList.add("show");
   }
 }
 
