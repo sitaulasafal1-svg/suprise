@@ -280,6 +280,15 @@ body {
 .letter.show .p2 { transition-delay: 0.4s; }
 .letter.show .p3 { transition-delay: 0.6s; }
 .letter.show .p4 { transition-delay: 0.8s; }
+
+/* 📱 MOBILE FIX */
+@media (max-width: 600px) {
+  .photo {
+    width: 65px;
+    height: 65px;
+  }
+}
+
 </style>
 </head>
 
@@ -395,12 +404,12 @@ function checkAndContinue() {
 function showPhotos() {
   const photos = document.querySelectorAll(".photo");
 
-  const minDist = 16; // spacing between photos
+  const minDist = 18; // spacing between photos
   const points = [];
 
   function isValid(x, y) {
     // avoid center (letter)
-    if (x > 30 && x < 70 && y > 30 && y < 70) return false;
+   if (x > 25 && x < 75 && y > 25 && y < 75)  return false;
 
     return points.every(p => {
       const dx = p.x - x;
