@@ -169,6 +169,33 @@ body {
   }
 }
 
+/* FULLSCREEN IMAGE VIEW */
+.preview {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: 0.3s;
+  z-index: 50;
+}
+
+.preview.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.preview img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 15px;
+}
 
 </style>
 </head>
@@ -238,6 +265,10 @@ body {
   <img src="u.jpeg" class="photo">
   <img src="v.jpeg" class="photo">
   <img src="w.jpeg" class="photo">
+</div>
+
+<div id="preview" class="preview">
+  <img id="previewImg">
 </div>
 
 </div>
@@ -313,6 +344,78 @@ function showPhotos() {
   });
 }
 
+// PREVIEW OPEN
+function openPreview(src) {
+  const preview = document.getElementById("preview");
+  const img = document.getElementById("previewImg");
+
+  img.src = src;
+  preview.classList.add("show");
+}
+
+// CLOSE PREVIEW
+document.getElementById("preview").onclick = function() {
+  this.classList.remove("show");
+};
+
+// DRAG + CLICK
+document.querySelectorAll(".photo").forEach(photo => {
+
+  let isDragging = false;
+  let offsetX, offsetY;
+
+  // TOUCH START
+  photo.addEventListener("touchstart", e => {
+    isDragging = false;
+    const touch = e.touches[0];
+    offsetX = touch.clientX - photo.offsetLeft;
+    offsetY = touch.clientY - photo.offsetTop;
+  });
+
+  // TOUCH MOVE
+  photo.addEventListener("touchmove", e => {
+    isDragging = true;
+    const touch = e.touches[0];
+
+    photo.style.left = touch.clientX - offsetX + "px";
+    photo.style.top = touch.clientY - offsetY + "px";
+  });
+
+  // TOUCH END (CLICK)
+  photo.addEventListener("touchend", () => {
+    if (!isDragging) {
+      openPreview(photo.src);
+    }
+  });
+
+  // MOUSE (PC)
+  photo.addEventListener("mousedown", e => {
+    isDragging = false;
+    offsetX = e.clientX - photo.offsetLeft;
+    offsetY = e.clientY - photo.offsetTop;
+
+    function move(e) {
+      isDragging = true;
+      photo.style.left = e.clientX - offsetX + "px";
+      photo.style.top = e.clientY - offsetY + "px";
+    }
+
+    function up() {
+      document.removeEventListener("mousemove", move);
+      document.removeEventListener("mouseup", up);
+
+      if (!isDragging) {
+        openPreview(photo.src);
+      }
+    }
+
+    document.addEventListener("mousemove", move);
+    document.addEventListener("mouseup", up);
+  });
+
+});
+
+</script>
 
 </script>
 
