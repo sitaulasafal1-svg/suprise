@@ -362,54 +362,49 @@ document.getElementById("preview").onclick = function() {
 document.querySelectorAll(".photo").forEach(photo => {
 
   let isDragging = false;
-  let offsetX = 0;
-  let offsetY = 0;
+  let startX, startY;
 
   // TOUCH START
   photo.addEventListener("touchstart", e => {
-    const touch = e.touches[0];
-    const rect = photo.getBoundingClientRect();
-
-    offsetX = touch.clientX - rect.left;
-    offsetY = touch.clientY - rect.top;
-
     isDragging = false;
+
+    const touch = e.touches[0];
+
+    startX = touch.clientX;
+    startY = touch.clientY;
   });
 
   // TOUCH MOVE
   photo.addEventListener("touchmove", e => {
-    const touch = e.touches[0];
-
     isDragging = true;
 
-    photo.style.left = (touch.clientX - offsetX) + "px";
-    photo.style.top = (touch.clientY - offsetY) + "px";
-    photo.style.transform = "translate(0, 0) scale(1)";
+    const touch = e.touches[0];
+
+    let x = touch.clientX;
+    let y = touch.clientY;
+
+    photo.style.left = x + "px";
+    photo.style.top = y + "px";
+    photo.style.transform = "translate(-50%, -50%) scale(1)";
   });
 
-  // TOUCH END
+  // TOUCH END (CLICK vs DRAG)
   photo.addEventListener("touchend", () => {
     if (!isDragging) {
       openPreview(photo.src);
     }
   });
 
-  // MOUSE SUPPORT
+  // PC SUPPORT
   photo.addEventListener("mousedown", e => {
-
-    const rect = photo.getBoundingClientRect();
-
-    offsetX = e.clientX - rect.left;
-    offsetY = e.clientY - rect.top;
-
     isDragging = false;
 
     function move(e) {
       isDragging = true;
 
-      photo.style.left = (e.clientX - offsetX) + "px";
-      photo.style.top = (e.clientY - offsetY) + "px";
-      photo.style.transform = "translate(0,0) scale(1)";
+      photo.style.left = e.clientX + "px";
+      photo.style.top = e.clientY + "px";
+      photo.style.transform = "translate(-50%, -50%) scale(1)";
     }
 
     function up() {
@@ -426,6 +421,10 @@ document.querySelectorAll(".photo").forEach(photo => {
   });
 
 });
+
+</script>
+
+</script>
 
 </script>
 
