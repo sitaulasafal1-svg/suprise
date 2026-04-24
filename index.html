@@ -6,18 +6,37 @@
 <title>Sky</title>
 
 <style>
-body {
+
+/* RESET */
+* {
   margin: 0;
-  overflow: hidden;
-  height: 100vh;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* BODY */
+body {
   background: black;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* APP CONTAINER (PORTRAIT CONTROL) */
+.app {
+  width: 100%;
+  max-width: 420px;
+  height: 100vh;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
 }
 
 /* SKY */
 .sky {
-  position: fixed;
+  position: absolute;
   width: 100%;
   height: 100%;
+  z-index: 0;
 }
 
 .sky img {
@@ -26,7 +45,7 @@ body {
   object-fit: cover;
 }
 
-/* BIG CLOUDS (TOP ONLY) */
+/* CLOUDS */
 .cloud {
   position: absolute;
   background: rgba(255,255,255,0.45);
@@ -34,29 +53,9 @@ body {
   filter: blur(35px);
 }
 
-.large1 {
-  width: 600px;
-  height: 300px;
-  top: 5%;
-  left: -600px;
-  animation: move 60s linear infinite;
-}
-
-.large2 {
-  width: 700px;
-  height: 350px;
-  top: 10%;
-  left: -700px;
-  animation: move 80s linear infinite;
-}
-
-.large3 {
-  width: 500px;
-  height: 250px;
-  top: 0%;
-  left: -500px;
-  animation: move 70s linear infinite;
-}
+.large1 { width:600px;height:300px;top:5%;left:-600px;animation:move 60s linear infinite;}
+.large2 { width:700px;height:350px;top:10%;left:-700px;animation:move 80s linear infinite;}
+.large3 { width:500px;height:250px;top:0%;left:-500px;animation:move 70s linear infinite;}
 
 @keyframes move {
   from { transform: translateX(0); }
@@ -66,21 +65,19 @@ body {
 /* FORM */
 .form-box {
   position: absolute;
-  bottom: 15%;
+  bottom: 18%;
   width: 100%;
   text-align: center;
   color: white;
+  z-index: 2;
 }
 
 .form-box input {
   padding: 10px 15px;
   border-radius: 25px;
   border: none;
-  outline: none;
-  width: 220px;           
-  max-width: 80%;         
+  width: 200px;
   text-align: center;
-  font-size: 1rem;
 }
 
 .form-box button {
@@ -89,199 +86,81 @@ body {
   border-radius: 20px;
   background: pink;
   border: none;
-  font-weight: bold;
 }
 
 /* MESSAGE */
 #message {
   position: absolute;
-  top: 40%;
+  top: 30%;
   width: 100%;
   text-align: center;
-  font-size: 2rem;
+  font-size: 1.8rem;
   color: white;
   opacity: 0;
   transition: 1s;
+  z-index: 2;
 }
 
-.popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: rgba(0,0,0,0.4);
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.4s;
-}
-
-.popup.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.popup-box {
-  background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(15px);
-  padding: 25px;
-  border-radius: 20px;
-  text-align: center;
-  color: white;
-  width: 70%;
-  max-width: 300px;
-  transform: scale(0.8);
-  transition: 0.4s;
-  box-shadow: 0 0 30px rgba(255,150,255,0.3);
-}
-
-.popup.show .popup-box {
-  transform: scale(1);
-}
-
-.popup-box button {
-  margin-top: 15px;
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  background: #ffb6ff;
-  color: black;
-  font-weight: bold;
-}
-
-.click-btn {
+/* BUTTON */
+#clickBtn {
   position: absolute;
   bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
-  
   padding: 12px 28px;
   border-radius: 30px;
-  
-  background: rgba(255, 182, 255, 0.2);
-  backdrop-filter: blur(10px);
-  
+  background: rgba(255,182,255,0.2);
   color: white;
-  font-size: 1.2rem;
-  font-weight: 500;
-  
-  cursor: pointer;
-  
-  box-shadow: 0 0 20px rgba(255,150,255,0.4);
-  
-  transition: 0.3s;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 3;
 }
 
-/* HOVER / TAP EFFECT */
-.click-btn:hover {
-  transform: translateX(-50%) scale(1.1);
-  box-shadow: 0 0 30px rgba(255,150,255,0.8);
-}
-
-#clickBtn {
+/* LETTER */
+.letter {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.6);
   opacity: 0;
   pointer-events: none;
   transition: 0.5s;
+  z-index: 10;
 }
 
-#clickBtn.show {
+.letter.show {
   opacity: 1;
   pointer-events: auto;
 }
 
-/* LETTER OVERLAY */
-.letter {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: rgba(0,0,0,0.5);
-
-  opacity: 0;
-  pointer-events: none;
-  transition: 0.6s;
-}
-
-/* SHOW STATE */
-.letter.show {
-  opacity: 1;
-  pointer-events: all;
-}
-
-/* LETTER BOX */
 .letter-box {
   background: rgba(255,255,255,0.1);
-  backdrop-filter: blur(20px);
-
-  padding: 25px;
+  padding: 20px;
   border-radius: 20px;
-
   color: white;
   text-align: center;
-
   width: 80%;
-  max-width: 320px;
-
-  transform: scale(0.8);
-  transition: 0.6s;
-
-  box-shadow: 0 0 40px rgba(255,150,255,0.3);
+  max-width: 280px;
+  z-index: 11;
 }
 
-.letter.show .letter-box {
-  transform: scale(1);
-}
-
-/* PHOTOS CONTAINER */
+/* PHOTOS */
 .photo {
   position: absolute;
-  width: 95px;
-  height: 95px;
+  width: 85px;
+  height: 85px;
+  border-radius: 14px;
   object-fit: cover;
-  border-radius: 16px;
-
   opacity: 0;
   transform: translate(-50%, -50%) scale(0.3);
-  transition: 0.5s ease;
-
-  box-shadow: 0 0 25px rgba(255,150,255,0.4);
+  transition: 0.5s;
+  z-index: 5;
 }
 
-.photo:nth-child(even) {
-  transform: translate(-50%, -50%) rotate(5deg) scale(0.3);
-}
-.photo:nth-child(odd) {
-  transform: translate(-50%, -50%) rotate(-5deg) scale(0.3);
-}
-
-/* POSITIONS (around letter) */
-.p1 { top: 10%; left: 10%; }
-.p2 { top: 10%; right: 10%; }
-.p3 { bottom: 15%; left: 15%; }
-.p4 { bottom: 15%; right: 15%; }
-
-/* SHOW ANIMATION */
-.letter.show .photo {
-  opacity: 1;
-  transform: scale(1);
-}
-
-/* STAGGER EFFECT */
-.letter.show .p1 { transition-delay: 0.2s; }
-.letter.show .p2 { transition-delay: 0.4s; }
-.letter.show .p3 { transition-delay: 0.6s; }
-.letter.show .p4 { transition-delay: 0.8s; }
-
-/* 📱 MOBILE FIX */
+/* MOBILE */
 @media (max-width: 600px) {
   .photo {
     width: 65px;
@@ -289,157 +168,129 @@ body {
   }
 }
 
+.photo {
+  filter: brightness(1.2);
+}
+
 </style>
 </head>
 
 <body>
 
-<div class="sky">
-  <img src="sky.jpg">
-</div>
+<div class="app">
 
-<!-- CLOUDS -->
+<div class="sky"><img src="sky.jpg"></div>
+
 <div class="cloud large1"></div>
 <div class="cloud large2"></div>
 <div class="cloud large3"></div>
 
-<!-- FORM -->
 <div class="form-box">
   <h2>Tell me your name 💖</h2>
-  <input type="text" id="nameInput" placeholder="Enter your name">
+  <input type="text" id="nameInput">
   <br>
   <button onclick="checkAndContinue()">Continue</button>
 </div>
 
 <div id="message"></div>
-<div id="popup" class="popup">
-  <div class="popup-box">
-    <p id="popupText">Message</p>
-    <button onclick="closePopup()">OK</button>
-  </div>
-</div>
 
-<div class="click-btn" id="clickBtn" onclick="handleClick()">
-  Click here 💫
-</div>
+<div id="clickBtn" onclick="handleClick()">Click here 💫</div>
 
 <div id="letter" class="letter">
   <div class="letter-box">
-    <p>
-      Hey Maya 💖<br><br>
-You know those random moments we spend together…  
-the laughs, the small jokes, the simple things—  
-they somehow end up being my favorite memories ✨<br><br>
-So this little surprise…  
-it’s just a piece of those moments, saved for you 💌
-    </p>
-    
+    Hey Maya 💖<br><br>
+    You know those random moments we spend together…  
+    the laughs, the small jokes, the simple things—  
+    they somehow become my favorite memories ✨<br><br>
+    So this little world…  
+    it’s just a piece of those moments 💌
   </div>
 </div>
 
 <div class="photos">
-  <img src="1.jpeg" class="photo p1">
-  <img src="2.jpeg" class="photo p2">
-  <img src="3.jpeg" class="photo p3">
-  <img src="4.jpeg" class="photo p4">
-  <img src="5.jpeg" class="photo p5">
-  <img src="6.jpeg" class="photo p6">
-  <img src="7.jpeg" class="photo p7">
-  <img src="8.jpeg" class="photo p8">
-  <img src="9.jpeg" class="photo p9">
-  <img src="a.jpeg" class="photo p10">
-  <img src="b.jpeg" class="photo p11">
-  <img src="c.jpeg" class="photo p12">
-  <img src="d.jpeg" class="photo p13">
-  <img src="e.jpeg" class="photo p14">
-  <img src="f.jpeg" class="photo p15">
-  <img src="g.jpeg" class="photo p16">
-  <img src="h.jpeg" class="photo p17">
-  <img src="i.jpeg" class="photo p18">
-  <img src="j.jpeg" class="photo p19">
-  <img src="k.jpeg" class="photo p20">
-  <img src="l.jpeg" class="photo p21">
-  <img src="m.jpeg" class="photo p22">
-  <img src="n.jpeg" class="photo p23">
-  <img src="o.jpeg" class="photo p24">
-  <img src="q.jpeg" class="photo p25">
-  <img src="r.jpeg" class="photo p26">
-<img src="s.jpeg" class="photo p27">
-<img src="t.jpeg" class="photo p28">
-<img src="u.jpeg" class="photo p29">
-<img src="v.jpeg" class="photo p30">
-<img src="w.jpeg" class="photo p31">
+  <!-- keep all your images SAME -->
+  <img src="1.jpeg" class="photo">
+  <img src="2.jpeg" class="photo">
+  <img src="3.jpeg" class="photo">
+  <img src="4.jpeg" class="photo">
+  <img src="5.jpeg" class="photo">
+  <img src="6.jpeg" class="photo">
+  <img src="7.jpeg" class="photo">
+  <img src="8.jpeg" class="photo">
+  <img src="9.jpeg" class="photo">
+  <img src="a.jpeg" class="photo">
+  <img src="b.jpeg" class="photo">
+  <img src="c.jpeg" class="photo">
+  <img src="d.jpeg" class="photo">
+  <img src="e.jpeg" class="photo">
+  <img src="f.jpeg" class="photo">
+  <img src="g.jpeg" class="photo">
+  <img src="h.jpeg" class="photo">
+  <img src="i.jpeg" class="photo">
+  <img src="j.jpeg" class="photo">
+  <img src="k.jpeg" class="photo">
+  <img src="l.jpeg" class="photo">
+  <img src="m.jpeg" class="photo">
+  <img src="n.jpeg" class="photo">
+  <img src="o.jpeg" class="photo">
+  <img src="q.jpeg" class="photo">
+  <img src="r.jpeg" class="photo">
+  <img src="s.jpeg" class="photo">
+  <img src="t.jpeg" class="photo">
+  <img src="u.jpeg" class="photo">
+  <img src="v.jpeg" class="photo">
+  <img src="w.jpeg" class="photo">
+</div>
+
 </div>
 
 <script>
-function showPopup(text) {
-  document.getElementById("popupText").innerText = text;
-  document.getElementById("popup").classList.add("show");
-}
-
-function closePopup() {
-  document.getElementById("popup").classList.remove("show");
-}
 
 function checkAndContinue() {
-  const name = document.getElementById("nameInput").value.trim().toLowerCase();
+  const name = document.getElementById("nameInput").value.toLowerCase();
 
   if (name === "maya") {
     document.getElementById("message").innerHTML = "💖 Hello Maya 💖";
     document.getElementById("message").style.opacity = 1;
     document.querySelector(".form-box").style.display = "none";
 
-    // show button
     document.getElementById("clickBtn").style.opacity = 1;
     document.getElementById("clickBtn").style.pointerEvents = "auto";
-  } 
-  else if (name === "ambika") {
-    showPopup("No, what do I call you?");
-  } 
-  else {
-    showPopup("Hmm... that's not right 😏");
   }
+}
+
+function handleClick() {
+  document.getElementById("letter").classList.add("show");
+  showPhotos();
 }
 
 function showPhotos() {
   const photos = document.querySelectorAll(".photo");
 
-  const minDist = 18; // spacing between photos
+  const minDist = 16;
+  const margin = 8;
   const points = [];
 
   function isValid(x, y) {
-    // avoid center (letter)
-   if (x > 25 && x < 75 && y > 25 && y < 75)  return false;
+    if (x > 25 && x < 75 && y > 25 && y < 75) return false;
 
     return points.every(p => {
       const dx = p.x - x;
       const dy = p.y - y;
-      return Math.sqrt(dx * dx + dy * dy) > minDist;
+      return Math.sqrt(dx*dx + dy*dy) > minDist;
     });
   }
 
-  let attempts = 0;
-
-  while (points.length < photos.length && attempts < 5000) {
-    const margin = 8; // space from edges (IMPORTANT)
-
-const x = margin + Math.random() * (100 - 2 * margin);
-const y = margin + Math.random() * (100 - 2 * margin);
-
-    if (isValid(x, y)) {
-      points.push({ x, y });
-    }
-
-    attempts++;
-  }
-
-  // shuffle order → zig-zag feeling
-  points.sort(() => Math.random() - 0.5);
-
   photos.forEach((photo, i) => {
-    if (!points[i]) return;
+    let x, y, tries = 0;
 
-    const { x, y } = points[i];
+    do {
+      x = margin + Math.random() * (100 - 2*margin);
+      y = margin + Math.random() * (100 - 2*margin);
+      tries++;
+    } while (!isValid(x,y) && tries < 200);
+
+    points.push({x,y});
 
     photo.style.left = x + "%";
     photo.style.top = y + "%";
@@ -447,21 +298,10 @@ const y = margin + Math.random() * (100 - 2 * margin);
     setTimeout(() => {
       photo.style.opacity = 1;
       photo.style.transform = "translate(-50%, -50%) scale(1)";
-    }, i * 500);
+    }, i * 400);
   });
 }
-</script>
 
-<script>
-function handleClick() {
-  console.log("clicked"); // debug
-
-  // show letter
-  document.getElementById("letter").classList.add("show");
-
-  // trigger photos
-  showPhotos();
-}
 </script>
 
 </body>
