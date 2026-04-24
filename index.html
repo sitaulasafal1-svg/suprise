@@ -359,52 +359,60 @@ document.getElementById("preview").onclick = function() {
 };
 
 // DRAG + CLICK
+
+
+// DRAG + CLICK
 document.querySelectorAll(".photo").forEach(photo => {
 
   let isDragging = false;
-  let startX, startY;
+  let offsetX = 0;
+  let offsetY = 0;
 
   // TOUCH START
   photo.addEventListener("touchstart", e => {
-    isDragging = false;
-
     const touch = e.touches[0];
+    const rect = photo.getBoundingClientRect();
 
-    startX = touch.clientX;
-    startY = touch.clientY;
+    offsetX = touch.clientX - rect.left;
+    offsetY = touch.clientY - rect.top;
+
+    isDragging = false;
   });
 
   // TOUCH MOVE
   photo.addEventListener("touchmove", e => {
-    isDragging = true;
-
     const touch = e.touches[0];
 
-    let x = touch.clientX;
-    let y = touch.clientY;
+    isDragging = true;
 
-    photo.style.left = x + "px";
-    photo.style.top = y + "px";
-    photo.style.transform = "translate(-50%, -50%) scale(1)";
+    photo.style.left = (touch.clientX - offsetX) + "px";
+    photo.style.top = (touch.clientY - offsetY) + "px";
+    photo.style.transform = "translate(0, 0) scale(1)";
   });
 
-  // TOUCH END (CLICK vs DRAG)
+  // TOUCH END
   photo.addEventListener("touchend", () => {
     if (!isDragging) {
       openPreview(photo.src);
     }
   });
 
-  // PC SUPPORT
+  // MOUSE SUPPORT
   photo.addEventListener("mousedown", e => {
+
+    const rect = photo.getBoundingClientRect();
+
+    offsetX = e.clientX - rect.left;
+    offsetY = e.clientY - rect.top;
+
     isDragging = false;
 
     function move(e) {
       isDragging = true;
 
-      photo.style.left = e.clientX + "px";
-      photo.style.top = e.clientY + "px";
-      photo.style.transform = "translate(-50%, -50%) scale(1)";
+      photo.style.left = (e.clientX - offsetX) + "px";
+      photo.style.top = (e.clientY - offsetY) + "px";
+      photo.style.transform = "translate(0,0) scale(1)";
     }
 
     function up() {
@@ -421,10 +429,6 @@ document.querySelectorAll(".photo").forEach(photo => {
   });
 
 });
-
-</script>
-
-</script>
 
 </script>
 
